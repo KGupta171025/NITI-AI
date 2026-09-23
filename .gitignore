@@ -15,3 +15,4 @@ dist/
 # Ignore implementation phase PDFs
 Implementation_Phases/
 Implementation_Phases/*.pdf
+*.tsbuildinfo

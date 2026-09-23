@@ -38,7 +38,7 @@ jobs:
       - name: Build Next.js Web Application
         env:
           GITHUB_PAGES: "true"
-          NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY || 'AIzaSyD6s6Thpu1VxHC-f9-4hiDXlK6YDHoX7C4' }}
+          NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
           NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: "niti--ai.firebaseapp.com"
           NEXT_PUBLIC_FIREBASE_PROJECT_ID: "niti--ai"
           NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: "niti--ai.firebasestorage.app"

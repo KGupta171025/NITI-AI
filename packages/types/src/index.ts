@@ -95,3 +95,52 @@ export interface SchemeSummary {
   officialSourceUrl: string;
   version: number;
 }
+
+export interface SchemeEligibilityCriteria {
+  minAge?: number;
+  maxAge?: number;
+  genderAllowed?: Array<"all" | "female" | "male" | "transgender">;
+  socialCategoriesAllowed?: Array<SocialCategory | "all">;
+  allowedBusinessStages?: Array<BusinessStage | "all">;
+  allowedEnterpriseTypes?: Array<EnterpriseType | "all">;
+  maxTurnover?: number;
+  maxFundingSupported?: number;
+  statesApplicable?: string[];
+  areaTypeAllowed?: Array<AreaType | "all">;
+}
+
+export interface SchemeDetail extends SchemeSummary {
+  description: string;
+  benefitsSummary: string[];
+  eligibilityCriteria: SchemeEligibilityCriteria;
+  documentsRequired: string[];
+  applicationProcess: string[];
+  applicationUrl: string;
+  implementingAgency: string;
+  lastVerifiedAt: string;
+}
+
+/**
+ * AI Chat & RAG Types
+ */
+export interface ChatMessage {
+  id: string;
+  role: "user" | "assistant" | "system";
+  content: string;
+  timestamp: string;
+  citations?: Array<{
+    schemeId: string;
+    schemeName: string;
+    slug: string;
+    excerpt: string;
+  }>;
+}
+
+export interface SchemeMatchResult {
+  scheme: SchemeDetail;
+  matchScore: number;
+  isEligible: boolean;
+  matchReasons: string[];
+  disqualificationReasons: string[];
+}
+
