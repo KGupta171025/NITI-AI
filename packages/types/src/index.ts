@@ -34,6 +34,8 @@ export interface BusinessLocation {
   formattedAddress: string;
 }
 
+export type SocialCategory = "general" | "obc" | "sc" | "st" | "minority" | "ews";
+
 export interface EntrepreneurProfile {
   userId: string;
   fullName: string;
@@ -43,8 +45,8 @@ export interface EntrepreneurProfile {
   occupation: string;
   annualIncome: number;
   areaType: AreaType;
-  socialCategory?: "general" | "obc" | "sc" | "st" | "minority" | "ews";
-  isDisability?: boolean;
+  socialCategory?: SocialCategory | undefined;
+  isDisability?: boolean | undefined;
   preferredLanguage: SupportedLanguage;
   
   // Business fields

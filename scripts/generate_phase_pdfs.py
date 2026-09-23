@@ -173,3 +173,31 @@ if __name__ == "__main__":
         p2_sections,
         r"D:\Code_Files\Projects\NITI-AI\Implementation_Phases\Phase2_Authentication.pdf"
     )
+
+    # Generate Phase 3 PDF
+    p3_sections = [
+        ("1. Phase 3 Objectives", "Build an animated multi-step Entrepreneur Onboarding Wizard capturing personal profile, business parameters, registration statuses, and integrated interactive business location mapping for scheme eligibility."),
+        ("2. Architecture & Wizard Steps", [
+            "Step 1: Personal & Demographics (Full Name, Age, Gender, Education, Occupation, Income, Social Category, Language)",
+            "Step 2: Business & Enterprise Metadata (Business Name, Industry, Sector, Stage, Micro/Small/Medium, Employees, Turnover)",
+            "Step 3: Capital & Funding Requirement (Investment Needed, Loan vs Subsidy, Machinery, Working Capital, Registrations)",
+            "Step 4: Interactive Business Location Map (Leaflet / OpenStreetMap pinpoint, latitude, longitude, state, district, pincode)",
+            "Step 5: Review & Profile Confirmation (Completion score calculation and profile activation)"
+        ]),
+        ("3. Storage & State Synchronization", [
+            "Zustand Profile Store with persistent draft storage and validation",
+            "Location state integration linked to national geographic schemes",
+            "Automatic redirect to Dashboard with personalized profile intelligence"
+        ]),
+        ("4. Quality & Verification Gates", [
+            "Type-safe form handlers with zero runtime exceptions",
+            "Passes lint, typecheck, production build and automated tests",
+            "Conventional commit and push to GitHub repository"
+        ])
+    ]
+    build_pdf(
+        "NITI AI - Phase 3 Entrepreneur Onboarding & Location Specification",
+        "Multi-Step Wizard, Business Profile Engine & Geographic Map Integration",
+        p3_sections,
+        r"D:\Code_Files\Projects\NITI-AI\Implementation_Phases\Phase3_Onboarding.pdf"
+    )
