@@ -2,7 +2,8 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Sparkles, Globe, Shield, Zap } from "lucide-react";
+import { ArrowRight, Sparkles, Globe, Shield, Zap, User, LogOut } from "lucide-react";
+import { useAuthStore } from "@/lib/authStore";
 
 // ─── Feature Card ────────────────────────────────────────────────────────────
 function FeatureCard({
@@ -45,6 +46,8 @@ function StatItem({ value, label }: { value: string; label: string }) {
 
 // ─── Main Landing Page ────────────────────────────────────────────────────────
 export default function LandingPage() {
+  const { user, signOut } = useAuthStore();
+
   return (
     <div className="min-h-dvh flex flex-col relative overflow-x-hidden">
 
@@ -76,18 +79,39 @@ export default function LandingPage() {
 
           {/* Auth CTAs */}
           <div className="flex items-center gap-3">
-            <Link
-              href="/auth/signin"
-              className="hidden sm:block text-sm text-slate-300 hover:text-white transition-colors px-3 py-1.5"
-            >
-              Sign in
-            </Link>
-            <Link
-              href="/auth/signup"
-              className="btn-glow text-sm font-medium bg-brand-500 hover:bg-brand-400 text-white px-4 py-2 rounded-lg transition-all duration-200"
-            >
-              Get started
-            </Link>
+            {user ? (
+              <div className="flex items-center gap-3">
+                <Link
+                  href="/dashboard"
+                  className="flex items-center gap-1.5 text-sm text-slate-200 hover:text-white bg-white/10 px-3.5 py-1.5 rounded-lg border border-white/10"
+                >
+                  <User className="w-4 h-4 text-brand-400" />
+                  <span>{user.displayName || "Dashboard"}</span>
+                </Link>
+                <button
+                  onClick={() => signOut()}
+                  className="text-slate-400 hover:text-red-400 p-1.5 transition-colors"
+                  title="Sign out"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <>
+                <Link
+                  href="/auth/signin"
+                  className="hidden sm:block text-sm text-slate-300 hover:text-white transition-colors px-3 py-1.5"
+                >
+                  Sign in
+                </Link>
+                <Link
+                  href="/auth/signup"
+                  className="btn-glow text-sm font-medium bg-brand-500 hover:bg-brand-400 text-white px-4 py-2 rounded-lg transition-all duration-200"
+                >
+                  Get started
+                </Link>
+              </>
+            )}
           </div>
         </nav>
       </header>

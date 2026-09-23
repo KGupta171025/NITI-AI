@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono, Noto_Sans_Devanagari } from "next/font/google";
 import { Toaster } from "sonner";
+import { AuthProvider } from "@/components/auth/AuthProvider";
 import "@/styles/globals.css";
 
 // ─── Fonts ─────────────────────────────────────────────────────────────────
@@ -87,7 +88,9 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="antialiased">
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
         <Toaster
           position="top-right"
           richColors

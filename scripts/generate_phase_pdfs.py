@@ -141,3 +141,35 @@ if __name__ == "__main__":
         p1_sections,
         r"D:\Code_Files\Projects\NITI-AI\Implementation_Phases\Phase1_Frontend.pdf"
     )
+
+    # Generate Phase 2 PDF
+    p2_sections = [
+        ("1. Phase 2 Objectives", "Build complete, production-ready Authentication System integrating Firebase, Google Sign-In, Apple Sign-In, Email/Password, secure session handling, user record management, and protected route wrappers."),
+        ("2. Architecture & Security", [
+            "Firebase Client SDK initialization with provided production credentials",
+            "Authentication Provider: GoogleAuthProvider (popup & redirect)",
+            "Authentication Provider: OAuthProvider for Apple Sign-In",
+            "Email/Password authentication with field validation and clear error states",
+            "Zustand Auth Store with Firebase onAuthStateChanged session synchronization",
+            "Protected Route Middleware & client-side AuthGuard components",
+            "Persistent session storage with secure logout and token refresh"
+        ]),
+        ("3. User Flow Implemented", [
+            "Landing Page -> Sign Up / Sign In",
+            "Authentication Dialog / Dedicated Page with Liquid Glass aesthetic",
+            "Social Login: 1-click Google & Apple Sign-In",
+            "User Record initialization with onboarding state tracking",
+            "Smooth transition to Onboarding Wizard upon first sign-in"
+        ]),
+        ("4. Quality & Verification Gates", [
+            "Full TypeScript type-safety across all auth states and callbacks",
+            "Zero linting errors and clean Next.js build compilation",
+            "Conventional git commit and branch push to origin/main"
+        ])
+    ]
+    build_pdf(
+        "NITI AI - Phase 2 Authentication System Specification",
+        "Firebase Auth, Google Sign-In, Apple Sign-In & Secure Session Management",
+        p2_sections,
+        r"D:\Code_Files\Projects\NITI-AI\Implementation_Phases\Phase2_Authentication.pdf"
+    )
