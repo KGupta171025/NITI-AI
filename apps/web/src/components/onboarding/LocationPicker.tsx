@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { MapPin, Navigation, Compass, Search } from "lucide-react";
 import { toast } from "sonner";
+import { GoogleWordmarkIcon } from "@/components/ui/BrandIcons";
 
 interface LocationPickerProps {
   value: BusinessLocation;
@@ -168,6 +169,12 @@ export function LocationPicker({ value, onChange }: LocationPickerProps) {
             <span className="text-xs text-slate-400 max-w-sm mt-0.5">
               {value.formattedAddress || "Standardized National Address"}
             </span>
+          </div>
+
+          {/* Official Google watermark badge */}
+          <div className="absolute bottom-2 left-2.5 z-20 flex items-center gap-1.5 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded border border-white/10 opacity-80 hover:opacity-100 transition-opacity">
+            <span className="text-[10px] text-slate-400">Powered by</span>
+            <GoogleWordmarkIcon className="h-3.5 w-auto" />
           </div>
         </div>
       </div>

@@ -5,17 +5,17 @@ import { type ButtonHTMLAttributes, forwardRef } from "react";
 // ─── Variants ────────────────────────────────────────────────────────────────
 const variants = {
   primary:
-    "bg-brand-500 hover:bg-brand-400 text-white shadow-glow-sm hover:shadow-glow-md",
+    "bg-brand-500 hover:bg-brand-400 text-white shadow-glow-sm hover:shadow-glow-md hover:scale-[1.01] active:scale-[0.99]",
   secondary:
-    "bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700 hover:border-slate-600",
+    "bg-slate-800/90 hover:bg-slate-700/90 text-slate-100 border border-slate-700/80 hover:border-slate-500 hover:shadow-glass hover:scale-[1.01] active:scale-[0.99]",
   ghost:
-    "text-slate-300 hover:text-white hover:bg-white/5",
+    "text-slate-300 hover:text-white hover:bg-white/10 hover:shadow-sm",
   danger:
-    "bg-red-600 hover:bg-red-500 text-white",
+    "bg-red-600 hover:bg-red-500 text-white hover:shadow-md",
   outline:
-    "border border-brand-500/50 text-brand-400 hover:bg-brand-500/10",
+    "border border-brand-500/50 text-brand-400 hover:bg-brand-500/15 hover:border-brand-400 hover:shadow-glow-sm",
   glass:
-    "glass-card text-slate-100 hover:border-white/20",
+    "glass-card text-slate-100 hover:border-brand-500/40 hover:bg-white/[0.12] hover:shadow-glow-sm hover:scale-[1.01] active:scale-[0.99]",
 };
 
 const sizes = {
