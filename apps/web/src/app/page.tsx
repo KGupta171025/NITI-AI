@@ -49,7 +49,7 @@ export default function LandingPage() {
   const { user, signOut } = useAuthStore();
 
   return (
-    <div className="min-h-dvh flex flex-col relative overflow-x-hidden">
+    <div className="min-h-dvh bg-slate-950 text-slate-100 flex flex-col relative overflow-x-hidden">
 
       {/* ─── Background glows ──── */}
       <div aria-hidden className="pointer-events-none fixed inset-0 z-0">
