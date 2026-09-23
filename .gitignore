@@ -1,0 +1,17 @@
+node_modules/
+.next/
+out/
+build/
+dist/
+.cache/
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.DS_Store
+.vscode/
+.idea/
+# Ignore implementation phase PDFs
+Implementation_Phases/
+Implementation_Phases/*.pdf

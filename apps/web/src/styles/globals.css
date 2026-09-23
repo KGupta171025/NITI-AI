@@ -1,0 +1,143 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── CSS Custom Properties (Design Tokens) ──────────────────────────────── */
+:root {
+  /* Brand */
+  --color-brand:       #f07000;
+  --color-brand-light: #ff8800;
+  --color-teal:        #14b8a6;
+
+  /* Glass */
+  --glass-bg:          rgba(255, 255, 255, 0.08);
+  --glass-border:      rgba(255, 255, 255, 0.12);
+  --glass-shadow:      0 4px 16px rgba(0, 0, 0, 0.12);
+
+  /* Radius */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+
+  /* Easing */
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out:    cubic-bezier(0, 0, 0.2, 1);
+
+  /* Scroll */
+  scroll-behavior: smooth;
+}
+
+/* ─── Dark mode tokens ───────────────────────────────────────────────────── */
+.dark {
+  --glass-bg:     rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.08);
+}
+
+/* ─── Base Resets ────────────────────────────────────────────────────────── */
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  body {
+    @apply bg-slate-950 text-slate-100 font-sans;
+    min-height: 100dvh;
+    overscroll-behavior: none;
+  }
+
+  /* Focus ring – accessible, visible only on keyboard nav */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand-400 rounded-sm;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-slate-700 rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-slate-600;
+  }
+
+  /* Selection */
+  ::selection {
+    @apply bg-brand-500/30 text-white;
+  }
+}
+
+/* ─── Utility Classes ────────────────────────────────────────────────────── */
+@layer components {
+  /* Glass morphism card */
+  .glass-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(16px) saturate(1.8);
+    -webkit-backdrop-filter: blur(16px) saturate(1.8);
+    box-shadow: var(--glass-shadow);
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-brand-400 to-teal-400 bg-clip-text text-transparent;
+  }
+
+  /* Shimmer skeleton */
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      rgba(255,255,255,0.04) 25%,
+      rgba(255,255,255,0.10) 50%,
+      rgba(255,255,255,0.04) 75%
+    );
+    background-size: 1000px 100%;
+    @apply animate-shimmer;
+  }
+
+  /* Glow button */
+  .btn-glow {
+    @apply relative overflow-hidden transition-all duration-200;
+  }
+  .btn-glow:hover {
+    @apply shadow-glow-sm;
+  }
+
+  /* Liquid glass nav bar  */
+  .glass-nav {
+    background: rgba(8, 8, 20, 0.65);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    backdrop-filter: blur(24px) saturate(1.6);
+    -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  }
+}
+
+/* ─── Reduced Motion ─────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ─── Noto Sans Devanagari subset for Hindi ─────────────────────────────── */
+@layer utilities {
+  .font-hindi {
+    font-family: var(--font-devanagari), sans-serif;
+  }
+}

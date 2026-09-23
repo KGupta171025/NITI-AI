@@ -1,0 +1,23 @@
+{
+  "name": "niti-ai",
+  "private": true,
+  "version": "0.1.0",
+  "description": "NITI AI – Self-hosted multilingual AI scheme discovery platform",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @niti-ai/web dev",
+    "build": "pnpm --filter @niti-ai/web build",
+    "build:all": "pnpm -r build",
+    "lint": "pnpm --filter @niti-ai/web lint",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm --filter @niti-ai/web test",
+    "clean": "pnpm -r clean"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.4"
+  }
+}
