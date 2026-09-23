@@ -201,3 +201,36 @@ if __name__ == "__main__":
         p3_sections,
         r"D:\Code_Files\Projects\NITI-AI\Implementation_Phases\Phase3_Onboarding.pdf"
     )
+
+    # Generate Phase 4 PDF
+    p4_sections = [
+        ("1. Phase 4 Objectives", "Implement comprehensive Government Scheme Database with verified Central, State, and Ministry schemes, traceable source metadata, seed architecture, scheme exploration page, and multi-facet filtering."),
+        ("2. Comprehensive Scheme Schema", [
+            "Identifiers: scheme_id, scheme_name, short_name, slug, summary, description",
+            "Governance: government_level (central/state/ut), ministry, department, implementing_agency",
+            "Geographic: states_available, districts_available",
+            "Eligibility Criteria: target_groups, business_categories, industry_categories, business_stage, min/max age, income_rules, gender_rules",
+            "Financial Benefits: funding_range, loan_range, subsidy_percentage, interest_subvention",
+            "Procedural Metadata: documents_required, application_process, application_url, official_source_url",
+            "Lifecycle & Integrity: launch_date, closing_date, scheme_status (active/upcoming/suspended/closed), version, last_verified_at"
+        ]),
+        ("3. Verified National Seed Repository", [
+            "PMEGP (Prime Minister's Employment Generation Programme)",
+            "Stand-Up India Scheme (SC/ST & Women Entrepreneurs)",
+            "PM Mudra Yojana (Shishu, Kishore, Tarun categories)",
+            "Credit Guarantee Scheme for Micro and Small Enterprises (CGTMSE)",
+            "Pradhan Mantri Matsya Sampada Yojana (PMMSY)",
+            "State Industrial Policies (Madhya Pradesh, Gujarat, Maharashtra, Rajasthan, Karnataka, UP)"
+        ]),
+        ("4. Quality & Build Verification", [
+            "Complete responsive Scheme Explorer with interactive category and state filters",
+            "Detailed Scheme Detail view (/schemes/[slug]) with provenance tracking",
+            "Type-check, lint, production build validation, git commit and push"
+        ])
+    ]
+    build_pdf(
+        "NITI AI - Phase 4 Government Scheme Database Specification",
+        "National Scheme Schema, Traceable Provenance & Scheme Explorer Platform",
+        p4_sections,
+        r"D:\Code_Files\Projects\NITI-AI\Implementation_Phases\Phase4_SchemeDatabase.pdf"
+    )

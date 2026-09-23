@@ -1,0 +1,70 @@
+name: Deploy Next.js to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 12.5.1
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Build Next.js Web Application
+        env:
+          GITHUB_PAGES: "true"
+          NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY || 'AIzaSyD6s6Thpu1VxHC-f9-4hiDXlK6YDHoX7C4' }}
+          NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: "niti--ai.firebaseapp.com"
+          NEXT_PUBLIC_FIREBASE_PROJECT_ID: "niti--ai"
+          NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: "niti--ai.firebasestorage.app"
+          NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: "1098754504398"
+          NEXT_PUBLIC_FIREBASE_APP_ID: "1:1098754504398:web:9a6fab5f2cc5371576829f"
+          NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: "G-SCT4H8RY9H"
+        run: pnpm --filter @niti-ai/web build
+
+      - name: Add .nojekyll
+        run: touch apps/web/out/.nojekyll
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/web/out
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
