@@ -17,9 +17,9 @@ export function AuthGuard({ children, requireOnboarded = false }: AuthGuardProps
   useEffect(() => {
     if (!isLoading) {
       if (!user) {
-        router.push("/auth/signin");
+        router.replace("/auth/signin");
       } else if (requireOnboarded && !user.isOnboarded) {
-        router.push("/onboarding");
+        router.replace("/onboarding");
       }
     }
   }, [user, isLoading, router, requireOnboarded]);

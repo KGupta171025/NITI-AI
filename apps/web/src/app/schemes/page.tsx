@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { SCHEMES_DATABASE } from "@/lib/schemesData";
+import { InfrastructureStatusModal } from "@/components/infrastructure/InfrastructureStatusModal";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/Card";
@@ -147,6 +148,7 @@ export default function SchemesExplorerPage() {
             >
               Sync Feeds
             </Button>
+            <InfrastructureStatusModal />
           </div>
         </div>
 

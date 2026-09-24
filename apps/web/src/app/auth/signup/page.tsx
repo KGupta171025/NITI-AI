@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/lib/authStore";
@@ -18,7 +18,14 @@ export default function SignUpPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
-  const { signInWithGoogle, signInWithApple, signUpWithEmail, signInAsDemoUser, error, clearError } = useAuthStore();
+  const { user, signInWithGoogle, signInWithApple, signUpWithEmail, signInAsDemoUser, error, clearError } = useAuthStore();
+
+  // If user is already logged in, redirect directly to dashboard or onboarding
+  useEffect(() => {
+    if (user) {
+      router.replace(user.isOnboarded ? "/dashboard" : "/onboarding");
+    }
+  }, [user, router]);
 
   const handleEmailSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,9 +38,14 @@ export default function SignUpPage() {
     try {
       await signUpWithEmail(name, email, password);
       toast.success("Account created successfully!");
-      router.push("/onboarding");
+      router.replace("/onboarding");
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Failed to create account.";
+      if (msg.toLowerCase().includes("already") || msg.includes("in-use")) {
+        toast.info("An account with this email already exists. Redirecting to Sign In...");
+        setTimeout(() => router.replace(`/auth/signin?email=${encodeURIComponent(email)}`), 1200);
+        return;
+      }
       toast.error(msg);
     } finally {
       setIsSubmitting(false);
@@ -44,8 +56,14 @@ export default function SignUpPage() {
     clearError();
     try {
       await signInWithGoogle();
-      toast.success("Signed in with Google!");
-      router.push("/onboarding");
+      const currentUser = useAuthStore.getState().user;
+      if (currentUser?.isOnboarded) {
+        toast.success("Welcome back! Existing profile loaded.");
+        router.replace("/dashboard");
+      } else {
+        toast.success("Signed in with Google!");
+        router.replace("/onboarding");
+      }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Google sign-in was canceled or failed.";
       toast.error(msg);
@@ -56,8 +74,14 @@ export default function SignUpPage() {
     clearError();
     try {
       await signInWithApple();
-      toast.success("Signed in with Apple!");
-      router.push("/onboarding");
+      const currentUser = useAuthStore.getState().user;
+      if (currentUser?.isOnboarded) {
+        toast.success("Welcome back! Existing profile loaded.");
+        router.replace("/dashboard");
+      } else {
+        toast.success("Signed in with Apple!");
+        router.replace("/onboarding");
+      }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Apple sign-in was canceled or failed.";
       toast.error(msg);
@@ -67,7 +91,7 @@ export default function SignUpPage() {
   const handleDemoSignUp = () => {
     signInAsDemoUser();
     toast.success("Welcome, Aditi Sharma! Demo entrepreneur profile loaded.");
-    router.push("/dashboard");
+    router.replace("/dashboard");
   };
 
   return (

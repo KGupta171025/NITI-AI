@@ -131,19 +131,39 @@ export default function LandingPage() {
 
           {/* CTA buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/auth/signup"
-              className="btn-glow flex items-center gap-2 bg-brand-500 hover:bg-brand-400 text-white font-semibold px-8 py-3.5 rounded-xl transition-all duration-200 shadow-glow-sm hover:shadow-glow-md text-base"
-            >
-              Start for free
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
-              href="#how-it-works"
-              className="flex items-center gap-2 text-slate-300 hover:text-white border border-slate-700 hover:border-slate-500 px-8 py-3.5 rounded-xl transition-all duration-200 text-base"
-            >
-              See how it works
-            </Link>
+            {user ? (
+              <>
+                <Link
+                  href={user.isOnboarded ? "/dashboard" : "/onboarding"}
+                  className="btn-glow flex items-center gap-2 bg-brand-500 hover:bg-brand-400 text-white font-semibold px-8 py-3.5 rounded-xl transition-all duration-200 shadow-glow-sm hover:shadow-glow-md text-base"
+                >
+                  Go to Dashboard
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link
+                  href="/schemes"
+                  className="flex items-center gap-2 text-slate-300 hover:text-white border border-slate-700 hover:border-slate-500 px-8 py-3.5 rounded-xl transition-all duration-200 text-base"
+                >
+                  Explore Schemes
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/auth/signup"
+                  className="btn-glow flex items-center gap-2 bg-brand-500 hover:bg-brand-400 text-white font-semibold px-8 py-3.5 rounded-xl transition-all duration-200 shadow-glow-sm hover:shadow-glow-md text-base"
+                >
+                  Start for free
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link
+                  href="#how-it-works"
+                  className="flex items-center gap-2 text-slate-300 hover:text-white border border-slate-700 hover:border-slate-500 px-8 py-3.5 rounded-xl transition-all duration-200 text-base"
+                >
+                  See how it works
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Multilingual hint */}

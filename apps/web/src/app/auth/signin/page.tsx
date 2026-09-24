@@ -1,22 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuthStore } from "@/lib/authStore";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { Sparkles, Mail, Lock, AlertCircle, ArrowRight, ShieldCheck } from "lucide-react";
+import { Sparkles, Mail, Lock, AlertCircle, ArrowRight, ShieldCheck, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { AppleLogoIcon, GoogleLogoIcon } from "@/components/ui/BrandIcons";
 
-export default function SignInPage() {
-  const [email, setEmail] = useState("");
+function SignInForm() {
+  const searchParams = useSearchParams();
+  const prefillEmail = searchParams.get("email") || "";
+
+  const [email, setEmail] = useState(prefillEmail);
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
-  const { signInWithGoogle, signInWithApple, signInWithEmail, signInAsDemoUser, error, clearError } = useAuthStore();
+  const { user, signInWithGoogle, signInWithApple, signInWithEmail, signInAsDemoUser, error, clearError } = useAuthStore();
+
+  // If user is already logged in, redirect directly to dashboard or onboarding
+  useEffect(() => {
+    if (user) {
+      router.replace(user.isOnboarded ? "/dashboard" : "/onboarding");
+    }
+  }, [user, router]);
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,8 +38,9 @@ export default function SignInPage() {
     clearError();
     try {
       await signInWithEmail(email, password);
+      const currentUser = useAuthStore.getState().user;
       toast.success("Welcome back!");
-      router.push("/dashboard");
+      router.replace(currentUser?.isOnboarded ? "/dashboard" : "/onboarding");
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Authentication failed.";
       toast.error(msg);
@@ -42,8 +53,9 @@ export default function SignInPage() {
     clearError();
     try {
       await signInWithGoogle();
+      const currentUser = useAuthStore.getState().user;
       toast.success("Signed in with Google!");
-      router.push("/dashboard");
+      router.replace(currentUser?.isOnboarded ? "/dashboard" : "/onboarding");
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Google sign-in was canceled or failed.";
       toast.error(msg);
@@ -54,8 +66,9 @@ export default function SignInPage() {
     clearError();
     try {
       await signInWithApple();
+      const currentUser = useAuthStore.getState().user;
       toast.success("Signed in with Apple!");
-      router.push("/dashboard");
+      router.replace(currentUser?.isOnboarded ? "/dashboard" : "/onboarding");
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Apple sign-in was canceled or failed.";
       toast.error(msg);
@@ -65,7 +78,7 @@ export default function SignInPage() {
   const handleDemoSignIn = () => {
     signInAsDemoUser();
     toast.success("Welcome, Aditi Sharma! Instant Demo access enabled.");
-    router.push("/dashboard");
+    router.replace("/dashboard");
   };
 
   return (
@@ -160,5 +173,19 @@ export default function SignInPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function SignInPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-slate-950 text-slate-400">
+          <Loader2 className="w-8 h-8 animate-spin text-brand-400" />
+        </div>
+      }
+    >
+      <SignInForm />
+    </Suspense>
   );
 }

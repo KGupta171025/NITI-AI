@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { AuthGuard } from "@/components/auth/AuthGuard";
 import { useAuthStore } from "@/lib/authStore";
@@ -36,8 +36,16 @@ export default function UserProfilePage() {
     updateFunding, 
     updateLocation, 
     calculateCompletion, 
-    saveProfile 
+    saveProfile,
+    loadProfile
   } = useProfileStore();
+
+  // Load the authenticated user's specific profile
+  useEffect(() => {
+    if (user?.uid) {
+      loadProfile(user.uid);
+    }
+  }, [user?.uid, loadProfile]);
 
   const [activeTab, setActiveTab] = useState<"personal" | "enterprise" | "funding" | "location">("personal");
   const [isSaving, setIsSaving] = useState(false);
@@ -60,7 +68,7 @@ export default function UserProfilePage() {
   };
 
   return (
-    <AuthGuard>
+    <AuthGuard requireOnboarded>
       <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
         {/* Navigation Bar */}
         <header className="glass-nav sticky top-0 z-50">

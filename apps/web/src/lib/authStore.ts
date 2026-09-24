@@ -8,8 +8,9 @@ import {
   signOut as firebaseSignOut,
   updateProfile
 } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db, googleProvider, appleProvider, formatFirebaseAuthError } from "@/lib/firebase";
+import { useProfileStore } from "@/lib/profileStore";
 import { UserAccount } from "@niti-ai/types";
 
 interface AuthState {
@@ -51,12 +52,29 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       }
     }
 
-    const unsubscribe = onAuthStateChanged(auth, (fbUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
       if (fbUser) {
         // Read onboarding flag from localStorage if available
-        const localOnboarded = typeof window !== "undefined" 
+        let localOnboarded = typeof window !== "undefined" 
           ? localStorage.getItem(`onboarded_${fbUser.uid}`) === "true" 
           : false;
+
+        // Check Cloud Firestore for existing user profile & onboarding status
+        try {
+          const userDoc = doc(db, "users", fbUser.uid);
+          const snap = await getDoc(userDoc);
+          if (snap.exists()) {
+            const data = snap.data();
+            if (data?.isOnboarded || data?.profile) {
+              localOnboarded = true;
+              if (typeof window !== "undefined") {
+                localStorage.setItem(`onboarded_${fbUser.uid}`, "true");
+              }
+            }
+          }
+        } catch {
+          // If Firestore is temporarily unreachable, fallback to local storage
+        }
 
         const account: UserAccount = {
           uid: fbUser.uid,
@@ -78,7 +96,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
             uid: account.uid,
             email: account.email,
             displayName: account.displayName,
-            lastLoginAt: account.lastLoginAt
+            lastLoginAt: account.lastLoginAt,
+            isOnboarded: account.isOnboarded
           }, { merge: true }).catch(() => {});
         } catch {
           // Gracefully continue if Firestore is offline
@@ -227,8 +246,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     try {
       if (typeof window !== "undefined") {
         localStorage.removeItem("niti_demo_session");
+        localStorage.removeItem("onboarded_demo-entrepreneur-id");
       }
       await firebaseSignOut(auth);
+      useProfileStore.getState().reset();
       set({ user: null, firebaseUser: null, isLoading: false, error: null });
     } catch (err: unknown) {
       const message = formatFirebaseAuthError(err);

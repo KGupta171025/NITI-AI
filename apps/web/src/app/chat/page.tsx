@@ -8,6 +8,7 @@ import { useAuthStore } from "@/lib/authStore";
 import { useProfileStore } from "@/lib/profileStore";
 import { ragAssistant } from "@/lib/ragAssistant";
 import { MarkdownMessage } from "@/components/chat/MarkdownMessage";
+import { InfrastructureStatusModal } from "@/components/infrastructure/InfrastructureStatusModal";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { ChatMessage } from "@niti-ai/types";
@@ -153,6 +154,9 @@ Conversation refreshed. What scheme, loan, or subsidy would you like to explore 
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
+            <div className="hidden lg:block">
+              <InfrastructureStatusModal />
+            </div>
             <Link href="/profile">
               <Button variant="ghost" size="sm" leftIcon={<UserCheck className="w-3.5 h-3.5" />}>
                 My Profile
@@ -326,7 +330,7 @@ Conversation refreshed. What scheme, loan, or subsidy would you like to explore 
 
 export default function ChatAssistantPage() {
   return (
-    <AuthGuard>
+    <AuthGuard requireOnboarded>
       <Suspense fallback={<div className="min-h-screen bg-slate-950 flex items-center justify-center text-slate-400">Loading NITI Saathi AI...</div>}>
         <ChatAssistantContent />
       </Suspense>
