@@ -55,6 +55,8 @@ export function formatFirebaseAuthError(err: unknown): string {
   const rawMessage = errorObj.message || "";
 
   switch (code) {
+    case "auth/configuration-not-found":
+      return "Firebase Authentication is not activated in project 'niti--ai'. In Firebase Console, click 'Authentication' in the left menu, then click 'Get started' and enable 'Email/Password'.";
     case "auth/unauthorized-domain":
       return "Domain unauthorized: Please add 'kgupta171025.github.io' in Firebase Console -> Authentication -> Settings -> Authorized Domains.";
     case "auth/operation-not-allowed":
