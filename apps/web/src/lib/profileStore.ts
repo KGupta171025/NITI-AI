@@ -1,4 +1,6 @@
 import { create } from "zustand";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 import { EntrepreneurProfile, BusinessLocation, SupportedLanguage, BusinessStage, EnterpriseType, AreaType } from "@niti-ai/types";
 
 interface ProfileState {
@@ -16,7 +18,7 @@ interface ProfileState {
   updateLocation: (location: BusinessLocation) => void;
   calculateCompletion: () => number;
   saveProfile: (userId: string) => EntrepreneurProfile;
-  loadProfile: (userId: string) => void;
+  loadProfile: (userId: string) => Promise<void>;
   reset: () => void;
 }
 
@@ -109,16 +111,32 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
       updatedAt: new Date().toISOString()
     };
 
+    // 1. Persist locally for instant offline retrieval
     if (typeof window !== "undefined") {
       localStorage.setItem(`profile_${userId}`, JSON.stringify(finalProfile));
       localStorage.setItem(`onboarded_${userId}`, "true");
+    }
+
+    // 2. Persist to Cloud Firestore database
+    try {
+      const userDocRef = doc(db, "users", userId);
+      setDoc(userDocRef, {
+        profile: finalProfile,
+        isOnboarded: true,
+        updatedAt: new Date().toISOString()
+      }, { merge: true }).catch((err) => {
+        console.warn("Firestore sync warning:", err);
+      });
+    } catch (err) {
+      console.warn("Firestore unavailable:", err);
     }
 
     set({ profile: finalProfile });
     return finalProfile;
   },
 
-  loadProfile: (userId: string) => {
+  loadProfile: async (userId: string) => {
+    // Check localStorage first
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem(`profile_${userId}`);
       if (saved) {
@@ -129,6 +147,23 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
           // Ignore parse errors
         }
       }
+    }
+
+    // Fetch latest from Cloud Firestore
+    try {
+      const userDocRef = doc(db, "users", userId);
+      const snapshot = await getDoc(userDocRef);
+      if (snapshot.exists()) {
+        const data = snapshot.data();
+        if (data?.profile) {
+          set({ profile: data.profile });
+          if (typeof window !== "undefined") {
+            localStorage.setItem(`profile_${userId}`, JSON.stringify(data.profile));
+          }
+        }
+      }
+    } catch {
+      // Graceful fallback to cached state
     }
   },
 
