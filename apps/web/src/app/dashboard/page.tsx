@@ -65,6 +65,11 @@ export default function DashboardPage() {
                   AI Chat
                 </Button>
               </Link>
+              <Link href="/profile">
+                <Button variant="secondary" size="sm" leftIcon={<Building2 className="w-4 h-4" />}>
+                  My Profile
+                </Button>
+              </Link>
               <div className="h-4 w-px bg-white/10 hidden sm:block" />
               <div className="hidden sm:flex flex-col text-right">
                 <span className="text-sm font-medium text-slate-200">

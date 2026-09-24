@@ -94,6 +94,11 @@ export interface SchemeSummary {
   closingDate?: string;
   officialSourceUrl: string;
   version: number;
+  portalSource?: string;
+  sector?: string;
+  tags?: string[];
+  isRealtimeVerified?: boolean;
+  liveStatusText?: string;
 }
 
 export interface SchemeEligibilityCriteria {
@@ -134,6 +139,7 @@ export interface ChatMessage {
     slug: string;
     excerpt: string;
   }>;
+  suggestions?: string[];
 }
 
 export interface SchemeMatchResult {
