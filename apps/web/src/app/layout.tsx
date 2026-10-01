@@ -91,8 +91,11 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              if (typeof window !== "undefined" && window.location.hostname === "niti--ai.firebaseapp.com") {
-                window.location.replace("https://niti--ai.web.app" + window.location.pathname + window.location.search + window.location.hash);
+              if (typeof window !== "undefined") {
+                var h = window.location.hostname;
+                if (h.indexOf("workers.dev") !== -1 || h.indexOf("pages.dev") !== -1 || h === "niti--ai.firebaseapp.com") {
+                  window.location.replace("https://niti--ai.web.app" + window.location.pathname + window.location.search + window.location.hash);
+                }
               }
             `,
           }}
