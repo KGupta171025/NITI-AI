@@ -87,6 +87,17 @@ export default function RootLayout({
       className={`${inter.variable} ${fontMono.variable} ${notoDevanagari.variable} dark`}
       suppressHydrationWarning
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if (typeof window !== "undefined" && window.location.hostname === "niti--ai.firebaseapp.com") {
+                window.location.replace("https://niti--ai.web.app" + window.location.pathname + window.location.search + window.location.hash);
+              }
+            `,
+          }}
+        />
+      </head>
       <body className="antialiased">
         <AuthProvider>
           {children}
